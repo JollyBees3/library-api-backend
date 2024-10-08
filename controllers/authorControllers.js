@@ -16,10 +16,9 @@ const dataManagement = async () => {
     const authors = await authorModel.find();
     return authors.map((author, index) => ({
         id: index + 1, // Use index + 1 for 1-based IDs
-        // _id: book._id, // Keep the original MongoDB ID if needed
+        _id: author._id, // Keep the original MongoDB ID if needed
         name: author.name,
         bio: author.bio,
-        // author: book.author,
         __v: author.__v,
     }));
 };
@@ -56,38 +55,37 @@ export const updateAuthor = async (req, res, next) => {
 
         // Fetch all authors to find the correct one based on the custom ID
         const authors = await dataManagement();
-        const authorUpdated = authors.find((author) => author.id === id);
+        const authorToUpdated = authors.find((author) => author.id === id);
 
-        if (!authorUpdated) {
+        if (!authorToUpdated) {
             return res.status(404).json("Author Not found");
         }
 
         // Update the book in the database using its MongoDB ID
-        const Author = await authorModel.findByIdAndUpdate(
-            authorUpdated._id,
+        const updatedAuthor = await authorModel.findByIdAndUpdate(
+            authorToUpdated._id,
             authorData,
             { new: true, runValidators: true }
         );
-        res.status(200).json("Author updated!");
+        res.status(200).json(updatedAuthor);
     } catch (error) {
         next(error);
-
     }
 };
 
 
 export const deleteAuthor = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         const authors = await dataManagement();
-        const authorDelete = authors.find((author) => author.id === id);
-        console.log(authorDelete)
-        if (!authorDelete) {
-            return res.status(404).json("Deleted Su");
+        const authorToDelete = authors.find((author) => author.id === id);
+        
+        if (!authorToDelete) {
+            return res.status(404).json("Author not found!");
         }
 
         // Delete the author using its MongoDB ID
-        await authorModel.findByIdAndDelete(authorDelete._id);
+        await authorModel.findByIdAndDelete(authorToDelete._id);
         // console.log(id)`
         res.status(200).json("Author Deleted");
     } catch (error) {
