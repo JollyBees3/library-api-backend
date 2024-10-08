@@ -3,11 +3,10 @@ import { authorModel } from "../models/authorModels.js";
 
 export const addAuthor = async (req, res, next) => {
     try {
-        await authorModel.create(req.body);
-        res.status(200).json("Author added successfully!");
+        const newAuthor = await authorModel.create(req.body);
+        res.status(200).json(newAuthor);
     } catch (error) {
         next(error);
-
     }
 };
 
@@ -81,14 +80,14 @@ export const deleteAuthor = async (req, res, next) => {
     try {
         const id = req.params.id;
         const authors = await dataManagement();
-        const authorDeleted = authors.find((author) => author.id === id);
-
-        if (!authorDeleted) {
-            return res.status(404).json("Author Not found");
+        const authorDelete = authors.find((author) => author.id === id);
+        console.log(authorDelete)
+        if (!authorDelete) {
+            return res.status(404).json("Deleted Su");
         }
 
         // Delete the author using its MongoDB ID
-        await authorModel.findByIdAndDelete(id);
+        await authorModel.findByIdAndDelete(authorDelete._id);
         // console.log(id)`
         res.status(200).json("Author Deleted");
     } catch (error) {
