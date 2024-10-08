@@ -1,10 +1,15 @@
 import express from "express";
-import libraryRouter from "./routes/libraryRoutes.js"
+import mongoose from "mongoose"
+import authorRouter from "./routes/authorRoutes.js";
+
+await mongoose.connect(process.env.MONGO_URI)
+
 const app = express();
-const port = 3000;
 
-app.use(libraryRouter);
+app.use(express.json())
 
-app.listen(port, () => {
-    console.log(`server is listening on ${port}`)
-})
+app.use(authorRouter);
+
+app.listen(3000, () => {
+  console.log("ports are listening 3000");
+});
