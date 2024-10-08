@@ -14,3 +14,5 @@ bookRouter.get("/getall", getAllBooks);
 bookRouter.get("/get/:id", getBook);
 bookRouter.patch("/update", updateBook);
 bookRouter.delete("/delete", deleteBook);
+
+export default bookRouter;
