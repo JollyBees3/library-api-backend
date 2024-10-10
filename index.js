@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import authorRouter from "./routes/authorRoutes.js";
 import bookRouter from "./routes/bookRoutes.js";
+import cors from "cors";
 
 await mongoose.connect(process.env.MONGO_URI);
 
