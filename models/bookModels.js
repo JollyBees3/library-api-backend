@@ -9,6 +9,9 @@ const bookSchema = new Schema ({
     },
     author: {
         type: Types.ObjectId, ref: "Author"
+    },
+    cover: {
+        type: String
     }
 })
 

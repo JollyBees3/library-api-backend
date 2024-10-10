@@ -5,7 +5,7 @@ export const addBook = async (req, res, next) => {
   try {
     const { error, value } = addBookValidator.validate(req.body);
     if (error) {
-      res.status(422).json(error)
+      res.status(422).json(error);
     }
     const newAddBook = await bookeModel.create(req.body);
     res.status(200).json(newAddBook);
@@ -23,6 +23,7 @@ const dataManagement = async () => {
     title: book.title,
     body: book.Body,
     author: book.author,
+    cover: book.cover,
     __v: book.__v,
   }));
 };
@@ -56,7 +57,7 @@ export const updateBook = async (req, res, next) => {
   try {
     const { error, value } = addBookValidator.validate(req.body);
     if (error) {
-      res.status(422).json(error)
+      res.status(422).json(error);
     }
     const id = parseInt(req.params.id);
     const bookData = req.body;
