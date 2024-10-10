@@ -2,8 +2,8 @@ import { bookeModel } from "../models/bookModels.js";
 
 export const addBook = async (req, res, next) => {
   try {
-    await bookeModel.create(req.body);
-    res.status.json("Book Successfully Added");
+    const newAddBook = await bookeModel.create(req.body);
+    res.status(200).json(newAddBook);
   } catch (error) {
     next(error);
   }
@@ -16,7 +16,7 @@ const dataManagement = async () => {
     id: index + 1,
     _id: book._id,
     title: book.title,
-    body: book.body,
+    body: book.Body,
     author: book.author,
     __v: book.__v,
   }));
@@ -28,6 +28,7 @@ export const getBook = async (req, res, next) => {
     const books = await dataManagement();
 
     const book = books.find((book) => book.id === id);
+    console.log(book)
     if (!book) {
       res.status(404).json("Book not found");
     }
@@ -60,7 +61,7 @@ export const updateBook = async (req, res, next) => {
     }
 
     // Update the book in the database using its MongoDB ID
-    const updatedBook = await libraryModel.findByIdAndUpdate(
+    const updatedBook = await bookeModel.findByIdAndUpdate(
       bookToUpdate._id,
       bookData,
       { new: true, runValidators: true }
@@ -83,10 +84,10 @@ export const deleteBook = async (req, res, next) => {
     }
 
     // Delete the book using its MongoDB ID
-    await libraryModel.findByIdAndDelete(bookToDelete._id);
+    await bookeModel.findByIdAndDelete(bookToDelete._id);
 
     console.log("Book Deleted Successfully");
-    res.status(200).json("Book Deleted");
+    res.status(200).json(bookToDelete);
   } catch (error) {
     next(error);
   }
