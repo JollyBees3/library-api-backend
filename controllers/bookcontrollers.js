@@ -1,7 +1,12 @@
 import { bookeModel } from "../models/bookModels.js";
+import { addBookValidator } from "../validators/bookValidators.js";
 
 export const addBook = async (req, res, next) => {
   try {
+    const { error, value } = addBookValidator.validate(req.body);
+    if (error) {
+      res.status(422).json(error)
+    }
     const newAddBook = await bookeModel.create(req.body);
     res.status(200).json(newAddBook);
   } catch (error) {
@@ -28,7 +33,7 @@ export const getBook = async (req, res, next) => {
     const books = await dataManagement();
 
     const book = books.find((book) => book.id === id);
-    console.log(book)
+    console.log(book);
     if (!book) {
       res.status(404).json("Book not found");
     }
@@ -49,6 +54,10 @@ export const getAllBooks = async (req, res, next) => {
 
 export const updateBook = async (req, res, next) => {
   try {
+    const { error, value } = addBookValidator.validate(req.body);
+    if (error) {
+      res.status(422).json(error)
+    }
     const id = parseInt(req.params.id);
     const bookData = req.body;
 
