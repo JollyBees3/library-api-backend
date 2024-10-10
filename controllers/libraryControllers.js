@@ -8,8 +8,5 @@ export const readAbookById = (req, res, next) => {
     } catch (error) {
         next(error)
     }
-    
-
-
 } 
 
